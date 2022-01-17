@@ -9,7 +9,7 @@
 
 
 ##LINKS
-1. Deployed App: https://fund-net-dapp.herokuapp.com/
+1. Deployed App: https://fund-net-dapp.herokuapp.com/ [in progress]
 2. Screencast: [In Progress]
 
 ## STATUS
