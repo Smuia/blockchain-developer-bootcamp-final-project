@@ -51,16 +51,15 @@ npm install
 npm start
 `````````````````````````
 
-* The react front-end project should run on http:localhost:3000, displaying a login portal which requires you to login to metamask.
+~ The react front-end project should run on http:localhost:3000, displaying a login portal which requires you to login to metamask.
 
-. Upon loggin in, you will be redirected to admin dashboard where you can navigate to different windows: Create Campaign, My Account and Section where created Campaigns are listed at.
+~ Upon loggin in, you will be redirected to admin dashboard where you can navigate to different windows: Create Campaign, My Account and Section where created Campaigns are listed at.
 
-> Click "Create Campaign" button on the homepage to start. Fill the necessary details and submit.
+~ Click "Create Campaign" button on the homepage to start. Fill the necessary details and submit.
 
-> The Campaign created will be listed under "Explore our campaigns"
+~ The Campaign created will be listed under "Explore our campaigns"
 
-> 
-
+ 
 
 
 
