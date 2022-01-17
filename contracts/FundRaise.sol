@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-//Define Fundraise contract
-contract FundRaise {
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-    uint public eventId = 0;
+//Define Fundraise contract
+contract FundRaise is ERC721, Ownable {
+
+    uint256 public eventId = 0;
 
     //define fundRaiseEvent Struct
     struct FundRaiseEvent {
@@ -20,6 +22,10 @@ contract FundRaise {
     struct HomeCard {
         string title;
         uint id;
+    }
+
+    constructor() ERC721 ("FundRaise", "FRD"){
+        
     }
 
     mapping (uint => FundRaiseEvent) public fundRaises;
