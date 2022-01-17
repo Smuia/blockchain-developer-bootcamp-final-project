@@ -10,14 +10,32 @@ import { FundRaiseWrapper } from './pages/fund-raise/FundRaise';
 import AppContext from './app-context'
 import FundRaise from './contracts/FundRaise.json';
 import getWeb3 from './getWeb3';
+import { ethers } from 'ethers';
 import NavBarComponent from './pages/components/NavBar';
 import './index.css';
 import LoginPageComponent from './pages/components/Login';
 import MyAccountComponent from './pages/components/MyAccount';
 import FooterComponent from './pages/components/Footer';
 
+function getLibrary(provider) {
+  return new ethers.providers.Web3Provider(provider);
+}
+
 
 export default function App() {
+
+  if (window.ethereum) {
+    window.ethereum.on('networkChanged', () => window.location.reload());
+  }else if(window.ethereum){
+    window.ethereum.on('accountsChanged', (accounts) => {
+      if(!accounts.length){
+        alert("Account disconnected");
+      }
+      window.location.reload()
+    });
+  }else if(!window.ethereum){
+    alert("You need to install Metamask to proceed")
+  }
 
   const [dependencies, setDependencies] = useState({ web3: null, account: null, fundRaise: null, loaded: false });
 
@@ -31,13 +49,20 @@ export default function App() {
       web3 = await getWeb3();
       networkId = await web3.eth.net.getId();
       networkData = FundRaise.networks[networkId];
-      fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
+
+      if(networkData === undefined){
+
+        alert("Connect to Localhost or Rinkeby network only to proceed");
+      }else{
+        fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
       
 
       const [account] = await web3.eth.getAccounts();
 
       setDependencies(previousState => ({ ...previousState, web3, account, fundRaise, loaded: true }));
-    })();
+   
+      }
+       })();
   }, []);
 
 
@@ -49,7 +74,7 @@ export default function App() {
   
   return (
     <Router>
-      <AppContext.Provider>
+      <AppContext.Provider getLibrary={getLibrary}>
         {
           dependencies.loaded ?
           (
@@ -92,7 +117,7 @@ export default function App() {
               
               
           ) : 
-          <Alert variant="warning">Oops!I could not load dependencies to this app. Working on it.</Alert>
+          <Alert variant="warning">Connect to Localhost or Rinkeby network only to proceed</Alert>
         }
       </AppContext.Provider>
     </Router>

@@ -125,15 +125,16 @@ function CreateModal({
 
 export function HomeWrapper() {
 
-  const [fundRaiseForm, setFundRaiseForm] = useState({ title: '', goal: '', description: '' })
-  const [loading, setLoading] = useState(true)
-  const [modalVisible, setModalVisible] = useState(false)
-  const [fundRaises, setFundRaises] = useState([])
+  const [fundRaiseForm, setFundRaiseForm] = useState({ title: '', goal: '', description: '' });
+  const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [fundRaises, setFundRaises] = useState([]);
+  const { dependencies } = useContext(AppContext);
 
-  const { dependencies } = useContext(AppContext)
-  const { fundRaise, account, web3 } = dependencies
+  
+  const { fundRaise, account, web3 } = dependencies;
 
-  const history = useHistory()
+  const history = useHistory();
 
   /**
    * @description Function used to get the events
