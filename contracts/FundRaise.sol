@@ -2,32 +2,35 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+/// @title Contract for automated charity fundraising projects.
+/// @author Simon Muia
+/// @notice Allows a user to create fundraising campaigns.
+/// @dev Timestamps in secs to match block.timestamp unit 
 
 //Define Fundraise contract
-contract FundRaise is ERC721, Ownable {
+contract FundRaise is Ownable {
 
     uint256 public eventId = 0;
 
     //define fundRaiseEvent Struct
     struct FundRaiseEvent {
-        string title;
-        string description;
-        uint goal;
-        uint current;
-        uint id;
+        string title; //Project title
+        string description; // Project description
+        uint goal; // Amount the beneficiary wishes to raise
+        uint currentAmount; //current fundraised amount
+        uint id; //Project id
         bool status;
-        address creator;
+        address payable creator; //If the project owner who is allowed to withdraw.
     }
-
+    //Load the project title and description.
     struct HomeCard {
         string title;
         uint id;
     }
 
-    constructor() ERC721 ("FundRaise", "FRD"){
-        
-    }
-
+    
     mapping (uint => FundRaiseEvent) public fundRaises;
 
     //Emit an event to let the user know the event has been created.
@@ -38,10 +41,20 @@ contract FundRaise is ERC721, Ownable {
     event Withdraw(uint id);
 
     //implement create fundraising event (capture, event title, description and goal)
-    function createEvent(string memory title, string memory description, uint goal) public {
+    function createEvent(
+        string memory _title, 
+        string memory _description, 
+        uint goal
+        ) public onlyOwner {
+
         uint idForNewEvent = eventId;
-        address eventCreator = msg.sender;
-        FundRaiseEvent memory newFundRaise = FundRaiseEvent(title, description, goal, 0, idForNewEvent, true, eventCreator);
+        address eventCreator = payable(msg.sender);
+
+        FundRaiseEvent memory newFundRaise = FundRaiseEvent(
+
+            _title, _description, goal, 0, idForNewEvent, true, eventCreator
+            
+            );
 
         fundRaises[idForNewEvent] = newFundRaise;
 
@@ -56,10 +69,10 @@ contract FundRaise is ERC721, Ownable {
         FundRaiseEvent storage fundRaise = fundRaises[idForEvent];
         uint amount = msg.value;
 
-        fundRaise.current = fundRaise.current + amount;
+        fundRaise.currentAmount = fundRaise.currentAmount + amount;
     }
 
-    //Get the current balance & Transfer balance to user
+    //Get the Amount balance & Transfer balance to user
     function withdraw(uint idForEvent) public {
 
         address payable accountWithdrawing = payable(msg.sender);
@@ -69,7 +82,7 @@ contract FundRaise is ERC721, Ownable {
         //Verify if person withdrawing is owner
         require(accountWithdrawing == fundRaise.creator);
         //If yes, transfer the amounts
-        accountWithdrawing.transfer(fundRaise.current);
+        accountWithdrawing.transfer(fundRaise.currentAmount);
 
         fundRaise.status = false;
 
