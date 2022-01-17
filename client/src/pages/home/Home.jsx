@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import getImageForFundRaise from '../utils/get-image-for-fund-raise';
 import AppContext from '../../app-context';
