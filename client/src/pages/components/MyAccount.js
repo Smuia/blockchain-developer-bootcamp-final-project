@@ -1,37 +1,21 @@
-import React, {useState, useEffect} from 'react';
-import {Container,Row, Col, Table} from 'react-bootstrap';
+import React from 'react';
+import {Container,Row, Col, Button, Table} from 'react-bootstrap';
 import './css/MyAccount.css';
-import {PersonBoundingBox} from 'react-bootstrap-icons';
-import Web3 from 'web3';
-import FundRaise from '../../contracts/FundRaise.json';
+import {PersonBoundingBox,DoorOpenFill} from 'react-bootstrap-icons';
+
 
 
 
 
 export default  function MyAccountComponent(){
 
-    const [dependencies, setDependencies] = useState({ web3: null, account: null, fundRaise: null, loaded: false });
-
-    /**
-     * @description Use effect to load the dependencies needed by the routes to interact with the blockchain
-     */
-    useEffect(() => {
-      (async function() {
-        const web3 = await Web3();
-  
-        const networkId = await web3.eth.net.getId();
-        const networkData = FundRaise.networks[networkId];
-        const fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
-  
-        const [account] = await web3.eth.accounts[0];
-  
-        setDependencies(previousState => ({ ...previousState, web3, account, fundRaise, loaded: true }));
-      })();
-    }, []);
   
     return(
         
         <Container className="Profile-wrapper">
+            <Row>
+                <Col><Button variant="outline-warning"> <DoorOpenFill/> Logout</Button></Col>
+            </Row>
             
             <Row>
                 <Col><h1><PersonBoundingBox/>  Account Details</h1></Col>
@@ -43,7 +27,7 @@ export default  function MyAccountComponent(){
                 <tbody>
                     <tr>
                         <th>Account Address</th>
-                        <td>{dependencies.account}</td>
+                        <td> </td>
                     </tr>
                     <tr>
                         

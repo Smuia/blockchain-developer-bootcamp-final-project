@@ -103,11 +103,34 @@ export function FundRaiseWrapper() {
   const { dependencies } = useContext(AppContext)
   const { fundRaise, account, web3 } = dependencies
 
+  //Define function to get fundraise data
+  let getFundRaiseData = React.useCallback(async function getFundRaiseData() {
+    return await fundRaise.methods.fundRaises(id).call()
+  },[fundRaise.methods,id]);
+
+  //Define setupDonateListener function
+  let setupDonateListener= React.useCallback(function setupDonateListener() {
+    fundRaise.events.Donated({}, (error, contractEvent) => {
+      const { amount } = contractEvent.returnValues
+      const updatedTotal = parseInt(amount) + parseInt(uiData.current) + ''
+      setUiData(previousState => ({ ...previousState, current: updatedTotal, modalVisible: false }))
+    })
+  },[uiData,fundRaise.events]);
+
+  //Define event listener for withdrawal
+  let setupWithdrawListener= React.useCallback(function setupWithdrawListener() {
+    fundRaise.events.Withdraw({}, (error, contractEvent) => {
+      setUiData(previousState => ({ ...previousState, status: false }))
+    })
+  },[fundRaise.events])
+
+  
+
   useEffect(() => {
     (async function() {
       setUiData(await getFundRaiseData())
     })()
-  }, [])
+  }, [getFundRaiseData])
   
   useEffect(() => {
     if (uiData.current) {
@@ -115,11 +138,9 @@ export function FundRaiseWrapper() {
       setupWithdrawListener()
       setLoading(false)
     }
-  }, [uiData])
+  }, [uiData, setupDonateListener, setupWithdrawListener])
 
-  async function getFundRaiseData() {
-    return await fundRaise.methods.fundRaises(id).call()
-  }
+  
 
   function onChange(event) {
     setDonateForm(event.target.value)
@@ -128,20 +149,6 @@ export function FundRaiseWrapper() {
   async function onSubmit(event) {
     event.preventDefault()
     await fundRaise.methods.donate(id).send({ from: account, value: web3.utils.toWei(donateForm, 'ether') })
-  }
-
-  function setupDonateListener() {
-    fundRaise.events.Donated({}, (error, contractEvent) => {
-      const { amount } = contractEvent.returnValues
-      const updatedTotal = parseInt(amount) + parseInt(uiData.current) + ''
-      setUiData(previousState => ({ ...previousState, current: updatedTotal, modalVisible: false }))
-    })
-  }
-  
-  function setupWithdrawListener() {
-    fundRaise.events.Withdraw({}, (error, contractEvent) => {
-      setUiData(previousState => ({ ...previousState, status: false }))
-    })
   }
 
   async function withdraw() {

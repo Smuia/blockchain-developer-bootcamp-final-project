@@ -16,24 +16,30 @@ import LoginPageComponent from './pages/components/Login';
 import MyAccountComponent from './pages/components/MyAccount';
 import FooterComponent from './pages/components/Footer';
 
+
 export default function App() {
+  if(window.ethereum) {
+    window.ethereum.on('networkChanged', () => window.location.reload());
+  }
 
   const [dependencies, setDependencies] = useState({ web3: null, account: null, fundRaise: null, loaded: false });
 
   /**
    * @description Use effect to load the dependencies needed by the routes to interact with the blockchain
    */
-  useEffect(() => {
-    (async function() {
-      const web3 = await getWeb3();
+   useEffect(() => {
+    (async function(networkId, networkData, fundRaise, web3) {
+      web3 = await getWeb3();
+      networkId = await web3.eth.net.getId();
+      networkData = FundRaise.networks[networkId];
+      fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
 
-      const networkId = await web3.eth.net.getId();
-      const networkData = FundRaise.networks[networkId];
-      const fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
       const [account] = await web3.eth.getAccounts();
+
       setDependencies(previousState => ({ ...previousState, web3, account, fundRaise, loaded: true }));
     })();
   }, []);
+
 
   /**
    * @description Abstraction for connecting user to application;

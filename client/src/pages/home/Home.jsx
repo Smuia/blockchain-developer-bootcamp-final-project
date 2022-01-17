@@ -135,28 +135,48 @@ export function HomeWrapper() {
 
   const history = useHistory()
 
+  /**
+   * @description Function used to get the events
+   */
+  let getFundRaises = React.useCallback(async function getFundRaises() {
+    return await fundRaise.methods.getHomeData().call()
+  },[fundRaise.methods]
+  );
+
+  let navigateToFundRaise = React.useCallback(
+    /**
+   * @description Wrapper for keeping code DRY
+   */
+  function navigateToFundRaise(id) {
+    history.push(`/fund-raise/${id}`)
+  },[history]
+
+  )
+
+
+  /**
+   * @description Setup the create event listener
+   */
+  let setupCreatePostListener = React.useCallback(function setupCreatePostListener() {
+    fundRaise.events.EventCreated({}, (error, contractEvent) => {
+      const { id } = contractEvent.returnValues
+      navigateToFundRaise(id)
+    })
+  },[navigateToFundRaise,fundRaise.events]);
+
+  
   useEffect(() => {
     (async function() {
       setupCreatePostListener()
       setFundRaises(await getFundRaises())
       setLoading(true)
     })()
-  }, [])
+  }, [setupCreatePostListener,getFundRaises])
 
-  /**
-   * @description Function used to get the events
-   */
-  async function getFundRaises() {
-    return await fundRaise.methods.getHomeData().call()
-  }
-
-  /**
-   * @description Wrapper for keeping code DRY
-   */
-  function navigateToFundRaise(id) {
-    history.push(`/fund-raise/${id}`)
-  }
-
+  
+  
+  
+  
   /**
    * @description On change handler for post modal
    * @param {Object} event
@@ -176,15 +196,7 @@ export function HomeWrapper() {
     await fundRaise.methods.createEvent(title, description, web3.utils.toWei(goal, 'ether')).send({ from: account })
   }
 
-  /**
-   * @description Setup the create event listener
-   */
-  function setupCreatePostListener() {
-    fundRaise.events.EventCreated({}, (error, contractEvent) => {
-      const { id } = contractEvent.returnValues
-      navigateToFundRaise(id)
-    })
-  }
+  
 
   return (
     loading ?
