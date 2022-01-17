@@ -1,0 +1,23 @@
+.Footer{
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.932);
+    color:#fff;
+    display:flex;
+    height:10vh;
+    bottom:0;
+    justify-content: space-around;
+    position:absolute;
+    right:0;
+    left:0;
+    padding:1rem;
+    z-index:999;
+}
+
+.Footer a{
+    color:#fff;
+}
+
+.Footer a:hover{
+    font-weight:bold;
+    color:#fff;
+}

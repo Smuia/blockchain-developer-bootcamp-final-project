@@ -1,0 +1,14 @@
+.navbar{
+    height: 6rem;
+    position:sticky;
+    
+}
+.nav-link{
+    color:#fff;
+    margin-left: 2rem;
+}
+
+.me-auto{
+    
+    margin-left:50%;
+}

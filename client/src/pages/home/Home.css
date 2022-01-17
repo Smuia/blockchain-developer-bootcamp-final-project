@@ -1,0 +1,51 @@
+body{
+  display:flex;
+  flex-direction:column;
+}
+
+.home .card-img-top {
+  height: 180px;  /* Make the height the same for all */
+}
+.home{
+  text-align: center;
+}
+
+.pageTitle{
+  text-decoration: underline;
+}
+.home-button-header-container {
+  bottom: 10px;
+  position: relative;
+  z-index: 5;
+  top:30%;
+  text-align:center;
+  color:#fff;
+}
+
+.home-top-section {
+  background-image: url("../images/images.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 250px;
+  width:100%;
+  position: relative;
+}
+
+.home-top-section-overlay {
+  background-color: rgba(63, 63, 62, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.createProjectBtn{
+  padding: 15px 15px 15px;
+  background-color: #fff;
+}
+
+.Container{
+  margin-bottom:4rem;
+}
