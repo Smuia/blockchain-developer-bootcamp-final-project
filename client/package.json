@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@bugsnag/plugin-react-native-unhandled-rejection": "^7.14.0",
     "@ethereumjs/common": "^2.6.0",
     "@web3-react/core": "^8.0.8-alpha.0",
     "@web3-react/injected-connector": "^6.0.7",

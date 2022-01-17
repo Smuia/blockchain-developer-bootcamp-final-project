@@ -4,7 +4,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import {Row, Col, Container} from 'react-bootstrap';
+import {Row, Col, Container, Alert} from 'react-bootstrap';
 import { HomeWrapper as Home } from './pages/home/Home';
 import { FundRaiseWrapper } from './pages/fund-raise/FundRaise';
 import AppContext from './app-context'
@@ -18,21 +18,21 @@ import FooterComponent from './pages/components/Footer';
 
 
 export default function App() {
-  if(window.ethereum) {
-    window.ethereum.on('networkChanged', () => window.location.reload());
-  }
 
   const [dependencies, setDependencies] = useState({ web3: null, account: null, fundRaise: null, loaded: false });
 
   /**
    * @description Use effect to load the dependencies needed by the routes to interact with the blockchain
    */
-   useEffect(() => {
-    (async function(networkId, networkData, fundRaise, web3) {
+
+   useEffect((networkId, networkData, fundRaise, web3) => {
+    (async function() {
+
       web3 = await getWeb3();
       networkId = await web3.eth.net.getId();
       networkData = FundRaise.networks[networkId];
       fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
+      
 
       const [account] = await web3.eth.getAccounts();
 
@@ -49,7 +49,7 @@ export default function App() {
   
   return (
     <Router>
-      <AppContext.Provider value={{ dependencies }}>
+      <AppContext.Provider>
         {
           dependencies.loaded ?
           (
@@ -92,7 +92,7 @@ export default function App() {
               
               
           ) : 
-          <div>loading....</div>
+          <Alert variant="warning">Oops!I could not load dependencies to this app. Working on it.</Alert>
         }
       </AppContext.Provider>
     </Router>
