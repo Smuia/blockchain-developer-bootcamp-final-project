@@ -7,6 +7,11 @@
 
 * The project is available on Github via https://github.com/Smuia/blockchain-developer-bootcamp-final-project.git
 
+
+##LINKS
+1. Deployed App: https://fund-net-dapp.herokuapp.com/
+2. Screencast: [In Progress]
+
 ## STATUS
 
 * The project is 99% Complete.
