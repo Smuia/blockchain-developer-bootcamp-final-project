@@ -1,6 +1,10 @@
-For security measures, I replaced assert with require in order to prevent the Assert Violation in SWC-110. Additionally, I utilise the official Openzeppelin libraries which limits exposure to bugs.
-https://swcregistry.io/docs/SWC-110
+# Contract Security measures
 
-In my smart contract, I addressed the outdated compiler version by using the latest compiler compatible with the ERC-721 openzeppelin contract, mirroring the simple-nft-example contract version from scaffold-eth.
-https://swcregistry.io/docs/SWC-102
+## SWC-103 (Floating pragma)
+
+I specified pragma `0.8.0` in my contracts to avoid accidental bug due to outdated compiler versions
+
+## SWC-105 (Unprotected Ether Withdrawal)
+`withdraw` is protected with OpenZeppelin `Ownable`'s `onlyOwner` modifier.
+
 

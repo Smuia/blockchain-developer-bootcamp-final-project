@@ -22,7 +22,7 @@ contract FundRaise is Ownable {
         uint currentAmount; //current fundraised amount
         uint id; //Project id
         bool status;
-        address payable creator; //If the project owner who is allowed to withdraw.
+        address creator; //If the project owner who is allowed to withdraw.
     }
     //Load the project title and description.
     struct HomeCard {
