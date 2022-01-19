@@ -126,7 +126,7 @@ const getCurrentChainId = async () => {
             <Row>
             <Col>Account Status: <strong style={{color:'green'}}>Logged In</strong></Col>
             
-            </Row>
+            </Row> 
 
             <div className="profileDetails">
             <Table striped bordered hover>
