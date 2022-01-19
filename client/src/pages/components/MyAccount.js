@@ -69,7 +69,7 @@ const handleConnectWallet = async () => {
 //Get network provider name
 const getProviderName = async (ProviderName) => {
     const provider = window.ethereum;
-    if(provider == window.ethereum){
+    if(provider === window.ethereum){
         ProviderName = "Metamask"
         setProviderName(ProviderName);
     }else{
@@ -149,7 +149,7 @@ const getCurrentChainId = async () => {
                     </tr>
                     <tr>
                         <th>Account Balance (ETH)</th>
-                        <td>{ ethBalance?.eth % 1 != 0 ? ethBalance?.eth.toFixed(4) : ethBalance?.eth} </td>
+                        <td>{ ethBalance?.eth % 1 !== 0 ? ethBalance?.eth.toFixed(4) : ethBalance?.eth} </td>
                     </tr>
                 </tbody>
             </Table>
