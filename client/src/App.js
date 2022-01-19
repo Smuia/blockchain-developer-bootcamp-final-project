@@ -5,7 +5,7 @@ import {
   Route
 } from 'react-router-dom'
 import {Row, Col, Container, Alert} from 'react-bootstrap';
-import { HomeWrapper as Home } from './pages/home/Home';
+import HomeWrapper from './pages/home/Home';
 import { FundRaiseWrapper } from './pages/fund-raise/FundRaise';
 import AppContext from './app-context'
 import FundRaise from './contracts/FundRaise.json';
@@ -91,9 +91,9 @@ export default function App() {
                   <FooterComponent/>
                 </Route>
                 <Route path="/">
-                <NavBarComponent/>
-                  <Home/>
-                  <FooterComponent/>
+                  <NavBarComponent/>
+                  <HomeWrapper/>
+                  <FooterComponent/>                
                 </Route>                
                 <Route path="*">
                   <NoMatch/>

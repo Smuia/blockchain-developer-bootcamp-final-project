@@ -5,7 +5,8 @@
   "dependencies": {
     "@bugsnag/plugin-react-native-unhandled-rejection": "^7.14.0",
     "@ethereumjs/common": "^2.6.0",
-    "@web3-react/core": "^8.0.8-alpha.0",
+    "@metamask/detect-provider": "^1.2.0",
+    "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "bootstrap": "^5.1.1",
     "ethers": "^5.5.3",
@@ -15,6 +16,7 @@
     "react-dom": "16.11.0",
     "react-input-number": "^5.0.19",
     "react-router-dom": "^5.3.0",
+    "react-safe-context": "^1.0.7",
     "react-scripts": "3.2.0",
     "web3": "1.2.2"
   },

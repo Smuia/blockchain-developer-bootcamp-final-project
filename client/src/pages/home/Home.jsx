@@ -7,6 +7,97 @@ import { Folder2Open, PencilSquare } from 'react-bootstrap-icons';
 
 import './Home.css';
 
+export default function HomeWrapper() {
+
+  const [fundRaiseForm, setFundRaiseForm] = useState({ title: '', goal: '', description: '' });
+  const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [fundRaises, setFundRaises] = useState([]);
+  
+  const { fundRaise, account, web3 } = useContext(AppContext);
+
+  const history = useHistory();
+
+  /**
+   * @description Function used to get the events
+   */
+  let getFundRaises = React.useCallback(async function getFundRaises() {
+    return await fundRaise.methods.getHomeData().call()
+  },[fundRaise.methods]
+  );
+
+  let navigateToFundRaise = React.useCallback(
+    /**
+   * @description Wrapper for keeping code DRY
+   */
+  function navigateToFundRaise(id) {
+    history.push(`/fund-raise/${id}`)
+  },[history]
+
+  )
+
+
+  /**
+   * @description Setup the create event listener
+   */
+  let setupCreatePostListener = React.useCallback(function setupCreatePostListener() {
+    fundRaise.events.EventCreated({}, (error, contractEvent) => {
+      const { id } = contractEvent.returnValues
+      navigateToFundRaise(id)
+    })
+  },[navigateToFundRaise,fundRaise.events]);
+
+  
+  useEffect(() => {
+    (async function() {
+      setupCreatePostListener()
+      setFundRaises(await getFundRaises())
+      setLoading(true)
+    })()
+  }, [setupCreatePostListener,getFundRaises])
+
+  
+  
+  
+  
+  /**
+   * @description On change handler for post modal
+   * @param {Object} event
+   */
+  function onChange(event) {
+    const { target } = event
+    setFundRaiseForm(previousState => ({ ...previousState, [target.name]: target.value }))
+  }
+
+  /**
+   * @description Submit handler for new post
+   * @param {Object} event 
+   */
+  async function onSubmit(event) {
+    event.preventDefault()
+    const { title, goal, description } = fundRaiseForm
+    await fundRaise.methods.createEvent(title, description, web3.utils.toWei(goal, 'ether')).send({ from: account })
+  }
+
+  
+
+  return (
+    loading ?
+    
+      <HomeWrapper
+        closeModal={() => setModalVisible(false)}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        modalVisible={modalVisible}
+        openModal={() => setModalVisible(true)}
+        fundRaises={fundRaises}
+        onClickCard={id => navigateToFundRaise(id)}
+      /> :
+      <div>loading...</div>
+  )
+}
+
+
 export function Home({
   closeModal,
   onChange,
@@ -120,97 +211,5 @@ function CreateModal({
         </Form>
       </Modal.Body>
     </Modal>
-  )
-}
-
-export function HomeWrapper() {
-
-  const [fundRaiseForm, setFundRaiseForm] = useState({ title: '', goal: '', description: '' });
-  const [loading, setLoading] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [fundRaises, setFundRaises] = useState([]);
-  const { dependencies } = useContext(AppContext);
-
-  
-  const { fundRaise, account, web3 } = dependencies;
-
-  const history = useHistory();
-
-  /**
-   * @description Function used to get the events
-   */
-  let getFundRaises = React.useCallback(async function getFundRaises() {
-    return await fundRaise.methods.getHomeData().call()
-  },[fundRaise.methods]
-  );
-
-  let navigateToFundRaise = React.useCallback(
-    /**
-   * @description Wrapper for keeping code DRY
-   */
-  function navigateToFundRaise(id) {
-    history.push(`/fund-raise/${id}`)
-  },[history]
-
-  )
-
-
-  /**
-   * @description Setup the create event listener
-   */
-  let setupCreatePostListener = React.useCallback(function setupCreatePostListener() {
-    fundRaise.events.EventCreated({}, (error, contractEvent) => {
-      const { id } = contractEvent.returnValues
-      navigateToFundRaise(id)
-    })
-  },[navigateToFundRaise,fundRaise.events]);
-
-  
-  useEffect(() => {
-    (async function() {
-      setupCreatePostListener()
-      setFundRaises(await getFundRaises())
-      setLoading(true)
-    })()
-  }, [setupCreatePostListener,getFundRaises])
-
-  
-  
-  
-  
-  /**
-   * @description On change handler for post modal
-   * @param {Object} event
-   */
-  function onChange(event) {
-    const { target } = event
-    setFundRaiseForm(previousState => ({ ...previousState, [target.name]: target.value }))
-  }
-
-  /**
-   * @description Submit handler for new post
-   * @param {Object} event 
-   */
-  async function onSubmit(event) {
-    event.preventDefault()
-    const { title, goal, description } = fundRaiseForm
-    await fundRaise.methods.createEvent(title, description, web3.utils.toWei(goal, 'ether')).send({ from: account })
-  }
-
-  
-
-  return (
-    loading ?
-    
-      <Home
-        closeModal={() => setModalVisible(false)}
-        onChange={onChange}
-        onSubmit={onSubmit}
-        modalVisible={modalVisible}
-        openModal={() => setModalVisible(true)}
-        fundRaises={fundRaises}
-        onClickCard={id => navigateToFundRaise(id)}
-      /> :
-      <div>loading...</div>
   )
 }
