@@ -54,12 +54,10 @@ export default function App() {
 
         alert("Connect to Localhost or Rinkeby network only to proceed");
       }else{
-        fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
-      
-
-      const [account] = await web3.eth.getAccounts();
-
-      setDependencies(previousState => ({ ...previousState, web3, account, fundRaise, loaded: true }));
+        
+      fundRaise = new web3.eth.Contract(FundRaise.abi, networkData.address);
+       const [account] = await web3.eth.getAccounts();
+       setDependencies(previousState => ({ ...previousState, web3, account, fundRaise, loaded: true }));
    
       }
        })();

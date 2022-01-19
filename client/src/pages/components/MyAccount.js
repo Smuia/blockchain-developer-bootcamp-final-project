@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Container,Row, Col, Button, Table} from 'react-bootstrap';
 import './css/MyAccount.css';
-import {PersonBoundingBox,DoorOpenFill} from 'react-bootstrap-icons';
+import {PersonBoundingBox,JournalAlbum} from 'react-bootstrap-icons';
 
 
 
@@ -14,7 +14,6 @@ import {PersonBoundingBox,DoorOpenFill} from 'react-bootstrap-icons';
 export default function MyAccountComponent(){
 
     const[walletAccount, setWalletAccount ] = useState('');
-    const[isConnected, setIsConnected ]= useState(false);
     const [ ethBalance, setEthBalance ] = useState(null);
     const [ currentChain, setCurrentChain ] = useState('');
     const[currentProvider, setProviderName] = useState('');
@@ -50,11 +49,7 @@ export default function MyAccountComponent(){
   }, [])
 
 
-  // Used to see if the wallet is currently connected to the application
-  // If an account has been accessed with MetaMask, then the wallet is connected to the application.
-  useEffect(() => {
-    setIsConnected(walletAccount ? true : false)
-}, [walletAccount])
+  
 
 // Connect the Wallet to the current selected account in MetaMask. 
 // Will generate a login request for user if no account is currently connected to the application
@@ -86,18 +81,7 @@ const getCurrentChainId = async () => {
     setCurrentChain(chainId);
 }
     
-   // Handle Disconnected. Removing the state of the account connected 
-  // to your app should be enough to handle Disconnect with your application.
   
-  // Handle Disconnected. Removing the state of the account connected 
-  // to your app should be enough to handle Disconnect with your application.
-  const handleDisconnect = async () => {
-
-    console.log('Disconnecting MetaMask...')
-    setIsConnected(false)
-    setWalletAccount('')
-}
-
     //get account balance of current user
     const handleGetBalance = async () => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -117,10 +101,10 @@ const getCurrentChainId = async () => {
         
         <Container className="Profile-wrapper">
             <Row>
-                <Col><Button variant="outline-primary" size="lg"  onClick={() => {handleGetBalance(); handleConnectWallet();getCurrentChainId(); getProviderName();}}> <DoorOpenFill/> Show Account Details</Button></Col>
-            </Row>
+                <Col><Button variant="outline-primary" size="lg"  onClick={() => {handleGetBalance(); handleConnectWallet();getCurrentChainId(); getProviderName();}}> <JournalAlbum/> Show Account Details</Button></Col>
+             </Row>
             
-            <Row>
+            <Row style={{marginTop:'4rem'}}>
                 <Col><h1><PersonBoundingBox/>  Account Details</h1></Col>
             </Row>
             <Row>
