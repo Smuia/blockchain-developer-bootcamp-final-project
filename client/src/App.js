@@ -7,7 +7,7 @@ import {
 import {Row, Col, Container, Alert} from 'react-bootstrap';
 import HomeWrapper from './pages/home/Home';
 import { FundRaiseWrapper } from './pages/fund-raise/FundRaise';
-import AppContext from './app-context'
+import mainContext from './app-context'
 import FundRaise from './contracts/FundRaise.json';
 import getWeb3 from './getWeb3';
 import { ethers } from 'ethers';
@@ -71,8 +71,8 @@ export default function App() {
    */
   
   return (
+    <mainContext.Provider getLibrary={getLibrary}>
     <Router>
-      <AppContext.Provider getLibrary={getLibrary}>
         {
           dependencies.loaded ?
           (
@@ -91,7 +91,7 @@ export default function App() {
                 <Route path="/">
                   <NavBarComponent/>
                   <HomeWrapper/>
-                  <FooterComponent/>                
+                  <FooterComponent/>  
                 </Route>                
                 <Route path="*">
                   <NoMatch/>
@@ -117,8 +117,8 @@ export default function App() {
           ) : 
           <Alert variant="warning">Connect to Localhost or Rinkeby network only to proceed</Alert>
         }
-      </AppContext.Provider>
-    </Router>
+    </Router> 
+    </mainContext.Provider>
   );
 }
 

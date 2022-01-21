@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import getImageForFundRaise from '../utils/get-image-for-fund-raise';
-import AppContext from '../../app-context';
+import AppContext from '../../app-context'; 
 import { Folder2Open, PencilSquare } from 'react-bootstrap-icons';
 
 import './Home.css';
@@ -83,8 +83,7 @@ export default function HomeWrapper() {
 
   return (
     loading ?
-    
-      <HomeWrapper
+        <Home
         closeModal={() => setModalVisible(false)}
         onChange={onChange}
         onSubmit={onSubmit}
@@ -92,7 +91,8 @@ export default function HomeWrapper() {
         openModal={() => setModalVisible(true)}
         fundRaises={fundRaises}
         onClickCard={id => navigateToFundRaise(id)}
-      /> :
+      />
+       :
       <div>loading...</div>
   )
 }
@@ -108,7 +108,7 @@ export function Home({
   onClickCard
 }) {
   return (
-    
+
     <Container fluid="lg" className="home">      
       <CreateModal
         onChange={onChange}
