@@ -5,5 +5,5 @@ import web3 from 'web3';
 export default React.createContext({
     fundRaise:() => {},
     web3: Web3Provider,
-    account: web3.eth.getAccounts()
+    account: ''
 });
